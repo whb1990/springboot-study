@@ -15,9 +15,9 @@ import java.util.concurrent.*;
  */
 public class LocalCommandExecutorImpl implements LocalCommandExecutor {
 
-    static final Logger logger = LoggerFactory.getLogger(LocalCommandExecutorImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(LocalCommandExecutorImpl.class);
 
-    static ExecutorService pool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 3L, TimeUnit.SECONDS,
+    private static ExecutorService pool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 3L, TimeUnit.SECONDS,
             new SynchronousQueue<>());
 
     @Override
@@ -29,7 +29,7 @@ public class LocalCommandExecutorImpl implements LocalCommandExecutor {
         StreamGobbler errorGobbler = null;
         Future<Integer> executeFuture = null;
         try {
-            logger.info(command.toString());
+            logger.info(command);
             process = Runtime.getRuntime().exec(command);
             final Process p = process;
 
