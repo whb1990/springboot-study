@@ -35,7 +35,7 @@
         </javaModelGenerator>
 
         <!-- XML映射文件Master数据源 -->
-        <sqlMapGenerator targetPackage="mapper.first"
+        <sqlMapGenerator targetPackage="mapper.seckill"
                          targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
@@ -48,16 +48,13 @@
 
         <!-- 要生成的数据库表 -->
         <!-- 配置表信息 -->
-
-        <table schema="test" tableName="seckill"
-               domainObjectName="seckill"
+        <table schema="test" tableName="success_killed"
+               domainObjectName="SuccessKilled"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
                selectByExampleQueryId="false">
         </table>
-
-
     </context>
 </generatorConfiguration>

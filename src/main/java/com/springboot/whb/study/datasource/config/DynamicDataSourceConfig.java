@@ -31,8 +31,8 @@ public class DynamicDataSourceConfig implements ApplicationContextAware {
     }
 
     @Bean
-    @ConfigurationProperties("spring.datasource.druid.first")
-    public DataSource firstDataSource() {
+    @ConfigurationProperties("spring.datasource.druid.seckill")
+    public DataSource seckillDataSource() {
         return DruidDataSourceBuilder.create().build();
     }
 
@@ -44,10 +44,10 @@ public class DynamicDataSourceConfig implements ApplicationContextAware {
 
     @Bean
     @Primary
-    public DynamicDataSource dataSource(DataSource firstDataSource, DataSource secondDataSource) {
+    public DynamicDataSource dataSource(DataSource seckillDataSource, DataSource secondDataSource) {
         Map<Object, Object> targetDataSource = new HashMap<>();
-        targetDataSource.put(DataSourceNames.FIRST, firstDataSource);
+        targetDataSource.put(DataSourceNames.SECKILL, seckillDataSource);
         targetDataSource.put(DataSourceNames.SECOND, secondDataSource);
-        return new DynamicDataSource(firstDataSource, targetDataSource);
+        return new DynamicDataSource(seckillDataSource, targetDataSource);
     }
 }

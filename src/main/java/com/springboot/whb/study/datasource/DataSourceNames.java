@@ -7,6 +7,9 @@ package com.springboot.whb.study.datasource;
  */
 public interface DataSourceNames {
 
-    String FIRST = "first";
+    /**
+     * 秒杀数据源
+     */
+    String SECKILL = "SECKILL";
     String SECOND = "second";
 }
