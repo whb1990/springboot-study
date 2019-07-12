@@ -63,4 +63,34 @@ public class SpringUtils implements ApplicationContextAware {
     public static <T> T getBean(String beanName, Class<T> clazz) {
         return getApplicationContext().getBean(beanName, clazz);
     }
+
+    /**
+     * 是否包含指定名称的Bean
+     *
+     * @param name
+     * @return
+     */
+    public static boolean containsBean(String name) {
+        return applicationContext.containsBean(name);
+    }
+
+    /**
+     * 是否单例
+     *
+     * @param name
+     * @return
+     */
+    public static boolean isSingleton(String name) {
+        return applicationContext.isSingleton(name);
+    }
+
+    /**
+     * Bean的类型
+     *
+     * @param name
+     * @return
+     */
+    public static Class<? extends Object> getType(String name) {
+        return applicationContext.getType(name);
+    }
 }
