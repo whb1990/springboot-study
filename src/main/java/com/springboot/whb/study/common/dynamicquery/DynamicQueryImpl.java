@@ -1,6 +1,5 @@
 package com.springboot.whb.study.common.dynamicquery;
 
-import org.hibernate.SQLQuery;
 import org.hibernate.query.internal.NativeQueryImpl;
 import org.hibernate.transform.Transformers;
 
