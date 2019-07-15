@@ -1,8 +1,8 @@
 package com.springboot.whb.study.modules.seckill.service.impl;
 
 import com.springboot.whb.study.common.Result;
-import com.springboot.whb.study.modules.seckill.po.Seckill;
-import com.springboot.whb.study.modules.seckill.repository.SeckillRepository;
+import com.springboot.whb.study.modules.seckill.dao.SeckillMapper;
+import com.springboot.whb.study.modules.seckill.entity.Seckill;
 import com.springboot.whb.study.modules.seckill.service.ICreateHtmlService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -22,8 +22,8 @@ import java.util.concurrent.*;
 
 /**
  * @author: whb
- * @date: 2019/7/12 15:06
- * @description: 生成页面接口实现
+ * @date: 2019/7/15 11:23
+ * @description: 生成商品HTML页面接口实现类
  */
 @Service
 public class CreateHtmlServiceImpl implements ICreateHtmlService {
@@ -42,13 +42,13 @@ public class CreateHtmlServiceImpl implements ICreateHtmlService {
     @Autowired
     public Configuration configuration;
     @Autowired
-    private SeckillRepository seckillRepository;
+    private SeckillMapper seckillMapper;
     @Value("${spring.freemarker.html.path}")
     private String path;
 
     @Override
     public Result createAllHtml() {
-        List<Seckill> list = seckillRepository.findAll();
+        List<Seckill> list = seckillMapper.findAll();
         final List<Future<String>> result = new ArrayList<>();
         for (Seckill seckill : list) {
             result.add(poolExecutor.submit(new createHtml(seckill)));
@@ -83,4 +83,3 @@ public class CreateHtmlServiceImpl implements ICreateHtmlService {
         }
     }
 }
-
