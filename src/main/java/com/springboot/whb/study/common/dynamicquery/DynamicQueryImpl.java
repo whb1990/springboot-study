@@ -2,6 +2,7 @@ package com.springboot.whb.study.common.dynamicquery;
 
 import org.hibernate.query.internal.NativeQueryImpl;
 import org.hibernate.transform.Transformers;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,6 +14,7 @@ import java.util.List;
  * @date: 2019/7/12 18:30
  * @description: 动态查询接口实现
  */
+@Repository
 public class DynamicQueryImpl implements DynamicQuery {
 
     @PersistenceContext
