@@ -63,24 +63,27 @@ spring:
 
   #thymeleaf
   thymeleaf:
-    mode: LEGACYHTML5
+    mode: HTML
     cache: false
 
   #静态文件请求匹配方式
   mvc:
     static-path-pattern: /**
 
-  jpa:
-    database: MYSQL
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-      naming:
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL5Dialect
+  #JPA配置
+  #jpa:
+    #database: MYSQL
+    #show-sql: true
+    #hibernate:
+      #ddl-auto: update
+      #naming:
+        #implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        #physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    #properties:
+      #hibernate:
+        #dialect: org.hibernate.dialect.MySQL5Dialect
+
+#Redisson配置
 redisson:
   address: redis://127.0.0.1:6379
   password:
