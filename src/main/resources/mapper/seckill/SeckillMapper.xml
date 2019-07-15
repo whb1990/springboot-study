@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.whb.study.modules.seckill.dao.SeckillMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.springboot.whb.study.modules.seckill.entity.Seckill">
+        <id column="seckill_id" property="seckillId" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="number" property="number" jdbcType="INTEGER"/>
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        seckill_id, `name`, `number`, start_time, end_time, create_time, version
+    </sql>
+    <select id="findAll" resultType="com.springboot.whb.study.modules.seckill.entity.Seckill">
+        select <include refid="Base_Column_List"/> from seckill
+    </select>
+
+    <select id="getNumberBySeckillId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select ifnull(`number`,0) from seckill where seckill_id = #{seckillId}
+    </select>
+
+    <select id="getNumberByDbPessimisticLock" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select ifnull(`number`,0) from seckill where seckill_id = #{seckillId} for update
+    </select>
+
+    <update id="updateSeckillByDbPessimisticLock" parameterType="java.lang.Long">
+        update seckill set `number` = `number` - 1 where seckill_id = #{seckillId} and `number` > 0
+    </update>
+
+    <update id="updateSeckillByDbOptimisticLock">
+        update seckill set `number` = #{number} - 1,`version` = `version` + 1 where seckill_id = #{seckillId} and `version` = #{version}
+    </update>
+</mapper>
