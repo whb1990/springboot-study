@@ -1,0 +1,25 @@
+有两个对象EntityA 和 EntityB。
+EntityA中有一个String类型的key和一个UniteA类型的集合对象；
+EntityB中有一个String类型的key和一个UniteB类型的集合对象；
+
+先给EntityA赋值，然后将EntityA的值赋值给EntityB，通过BeanUtils.copyProperties()方法赋值。
+这么执行，程序会发生异常信息：
+```
+java.lang.ClassCastException:reflect.UniteA cannot be cast to reflect.UniteB
+```
+对于这个异常，经调试发现，EntityA中的UniteA中的字段竟然能够赋值给EntityB中UniteB中的字段。
+**类型不一样**，竟能够存储！！！
+
+对于这个问题，归根于Java泛型的特点，**泛型仅仅适用于编译期**。例如下面的代码：
+```
+List<String> strList = new ArrayList<>();
+strList.add("abc");//正常的编译
+strList.add(1234);//编译不能通过
+```
+上面的代码可以看到String类型的List是无法直接添加一个整型数据的，但这个仅仅在编译期才校验，我们可以通过反射绕过这个验证。详细代码在`om.springboot.whb.study.beanUtils.ReflectTest.java`文件。
+
+>泛型只是在java的编译期会产生错误但是在java的运行期（已经生成字节码文件后）是会被擦除的，这个期间并没泛型的存在；
+
+>由此可见：泛型值存在于java的编译期，编译后生成字节码文件泛型是被擦除的；
+
+>浅拷贝图方便可以用beanutils，但是也要考虑性能。深拷贝是一定不能使用的，可以用mapstruct替代。
