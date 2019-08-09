@@ -1,21 +1,16 @@
 package com.springboot.whb.study.redislockframework;
 
-public class CacheLockException extends Throwable{
-	private String msg;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    public String getMsg() {
-        return msg;
-    }
+/**
+ * 缓存异常处理类
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CacheLockException extends Throwable {
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public CacheLockException(String msg) {
-        this.msg = msg;
-    }
-
-    public CacheLockException() {
-    }
-
+    private String msg;
 }

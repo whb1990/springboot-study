@@ -1,6 +1,7 @@
 package com.springboot.whb.study.redislockframework;
 
 import com.alibaba.fastjson.JSON;
+import com.springboot.whb.study.common.util.JsonUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Transaction;
@@ -11,15 +12,15 @@ import java.util.Map.Entry;
 public class RedisClient {
 
     public JedisPool jedisPool;
-    
+
     public RedisClient(JedisPool pool) {
-    	this.jedisPool = pool;
+        this.jedisPool = pool;
     }
-    
-    public RedisClient(){
-    	
+
+    public RedisClient() {
+
     }
-    
+
     public JedisPool getJedisPool() {
         return jedisPool;
     }
@@ -27,8 +28,8 @@ public class RedisClient {
     public void setJedisPool(JedisPool jedisPool) {
         this.jedisPool = jedisPool;
     }
-    
-   
+
+
     /**
      * 根据key来获取对应的value
      */
@@ -38,7 +39,7 @@ public class RedisClient {
         try {
             o = client.get(key);
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
         return o;
     }
@@ -52,14 +53,14 @@ public class RedisClient {
         try {
             o = client.exists(key);
         } finally {
-        	 jedisPool.returnResourceObject(client);;// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
         return o;
     }
 
     /**
      * String类型的键值写入redis
-     * 
+     *
      * @param key
      * @param value
      * @return
@@ -75,26 +76,28 @@ public class RedisClient {
                 return false;
             }
         } finally {
-        	 jedisPool.returnResourceObject(client);;// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
+            ;
         }
     }
-    
+
     public Long setnx(String key, String value) {
         Jedis client = jedisPool.getResource();
         try {
-        	
+
             Long result = client.setnx(key, value);
-            System.out.println("setnx key=" + key + " value=" + value + 
-            		"result=" + result) ;
-        	return result;
+            System.out.println("setnx key=" + key + " value=" + value +
+                    "result=" + result);
+            return result;
         } finally {
-        	 jedisPool.returnResourceObject(client);;// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
+            ;
         }
     }
 
     /**
      * String类型的键值写入redis,并设置失效时间
-     * 
+     *
      * @param key
      * @param value
      * @return
@@ -113,13 +116,13 @@ public class RedisClient {
                 return false;
             }
         } finally {
-        	 jedisPool.returnResourceObject(client);;// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
     }
 
     /**
      * list<String>结构的数据写入redis
-     * 
+     *
      * @param key
      * @param value
      * @return
@@ -134,13 +137,13 @@ public class RedisClient {
             tx.exec();
             return true;
         } finally {
-        	 jedisPool.returnResourceObject(client);;// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
     }
 
     /**
      * 根据key获取list类型
-     * 
+     *
      * @param key
      * @return
      */
@@ -148,25 +151,24 @@ public class RedisClient {
         Jedis client = jedisPool.getResource();
         List<String> returnList = null;
         try {
-        	 returnList = client.lrange(key, 0, -1);
+            returnList = client.lrange(key, 0, -1);
 
         } finally {
-        	 jedisPool.returnResourceObject(client);;// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
         return returnList;
     }
-    
-    public List<String> lrange(String key, int start, int length){
-		Jedis client = jedisPool.getResource();
+
+    public List<String> lrange(String key, int start, int length) {
+        Jedis client = jedisPool.getResource();
         try {
             return client.lrange(key, start, length);
-        } finally{
+        } finally {
             jedisPool.returnResourceObject(client);
         }
     }
 
     /**
-     * 
      * @param key
      * @param o
      * @return
@@ -178,7 +180,7 @@ public class RedisClient {
             o = client.set(key, afterSerialize);
             return true;
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
     }
 
@@ -187,12 +189,12 @@ public class RedisClient {
         Jedis client = jedisPool.getResource();
         T t;
         try {
-            String afterSerialize = Util.beanToJson(newValue);
+            String afterSerialize = JsonUtils.beanToJson(newValue);
             String value = client.getSet(key, afterSerialize);
-            t = (T) Util.jsonToBean(value, newValue.getClass());
+            t = (T) JsonUtils.jsonToBean(value, newValue.getClass());
             return t;
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
     }
 
@@ -204,7 +206,7 @@ public class RedisClient {
             if (s == null || s.length() == 0) {
                 return null;
             }
-            t = Util.jsonToBean(s, zz);
+            t = JsonUtils.jsonToBean(s, zz);
         } finally {
             jedisPool.returnResourceObject(client);
         }
@@ -219,7 +221,7 @@ public class RedisClient {
             Set<String> set = client.keys(pattern);
             result.addAll(set);
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
         return result;
     }
@@ -227,33 +229,31 @@ public class RedisClient {
     public boolean delKey(String key) {
         Jedis client = jedisPool.getResource();
         try {
-        	System.out.println("del key=" + key);
+            System.out.println("del key=" + key);
             client.del(key);
             return true;
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
     }
 
     public <T> boolean hset(String key, String field, T t) {
         Jedis client = jedisPool.getResource();
         try {
-            String afterSerialize = Util.beanToJson(t);
+            String afterSerialize = JsonUtils.beanToJson(t);
             client.hset(key, field, afterSerialize);
             return true;
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
 
     }
 
     /**
      * 存入的时hash结构的数据
-     * 
-     * @param key
-     * key
-     * @param map
-     * map的key实质为field。
+     *
+     * @param key key
+     * @param map map的key实质为field。
      * @return
      */
     public <T, S> boolean hmset(String key, Map<T, S> map) {
@@ -266,26 +266,24 @@ public class RedisClient {
             while (iterator.hasNext()) {
                 Entry<T, S> entry = iterator.next();
                 filed = String.valueOf(entry.getKey());
-                value = Util.beanToJson(entry.getValue());
+                value = JsonUtils.beanToJson(entry.getValue());
                 stringMap.put(filed, value);
             }
             client.hmset(key, stringMap);
             return true;
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
-
     }
 
     public <T> T hgetObject(String key, String field, Class<T> cls) {
         Jedis client = jedisPool.getResource();
         try {
             String value = client.hget(key, field);
-            return (T) Util.jsonToBean(value, cls);
+            return (T) JsonUtils.jsonToBean(value, cls);
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
-
     }
 
     public String hgetString(String key, String field) {
@@ -294,9 +292,8 @@ public class RedisClient {
             String value = client.hget(key, field);
             return value;
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
-
     }
 
     public Map<String, String> hGetAll(String key) {
@@ -304,9 +301,8 @@ public class RedisClient {
         try {
             return client.hgetAll(key);
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
-
     }
 
     public List<String> hkeys(String key) {
@@ -317,9 +313,8 @@ public class RedisClient {
             fields.addAll(set);
             return fields;
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
-
     }
 
     public List<String> hvals(String key) {
@@ -328,9 +323,8 @@ public class RedisClient {
             List<String> values = client.hvals(key);
             return values;
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
-
     }
 
     public boolean hexists(String key, String field) {
@@ -338,7 +332,7 @@ public class RedisClient {
         try {
             return client.hexists(key, field);
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
     }
 
@@ -361,8 +355,6 @@ public class RedisClient {
     }
 
     /**
-     * 
-     * 
      * @param key
      * @param field
      */
@@ -374,20 +366,20 @@ public class RedisClient {
             jedisPool.returnResourceObject(client);
         }
     }
-    
+
     public void lpush(String key, Object obj) {
-		Jedis client = jedisPool.getResource();
-		try {
-			String field = Util.beanToJson(obj);
-			client.lpush(key, field);
-		} finally {
-			jedisPool.returnResourceObject(client);
-		}
-	}
+        Jedis client = jedisPool.getResource();
+        try {
+            String field = JsonUtils.beanToJson(obj);
+            client.lpush(key, field);
+        } finally {
+            jedisPool.returnResourceObject(client);
+        }
+    }
 
     /**
      * 该方法不适用于普通的调用，该方法只针对于错误日志记录
-     * 
+     *
      * @param key
      * @param field
      */
@@ -402,12 +394,12 @@ public class RedisClient {
             jedisPool.returnResourceObject(client);
         }
     }
-    
-    public long llen(String key){
-		Jedis client = jedisPool.getResource();
+
+    public long llen(String key) {
+        Jedis client = jedisPool.getResource();
         try {
             return client.llen(key);
-        } finally{
+        } finally {
             jedisPool.returnResourceObject(client);
         }
     }
@@ -433,8 +425,8 @@ public class RedisClient {
     public <T> long sadd(String key, List<T> ts) {
         Jedis client = jedisPool.getResource();
         try {
-            if (ts == null || ts.size() ==0) {
-                return 0l;
+            if (ts == null || ts.size() == 0) {
+                return 0L;
             }
             String[] values = new String[ts.size()];
             for (int i = 0; i < ts.size(); i++) {
@@ -458,8 +450,8 @@ public class RedisClient {
     public <T> long srem(String key, List<T> ts) {
         Jedis client = jedisPool.getResource();
         try {
-            if (ts == null || ts.size() ==0) {
-                return 0l;
+            if (ts == null || ts.size() == 0) {
+                return 0L;
             }
             String[] values = new String[ts.size()];
             for (int i = 0; i < ts.size(); i++) {
@@ -488,7 +480,7 @@ public class RedisClient {
             jedisPool.returnResourceObject(client);
         }
     }
-    
+
     public Long hlen(String key) {
         Jedis client = jedisPool.getResource();
         try {
@@ -497,7 +489,7 @@ public class RedisClient {
             jedisPool.returnResourceObject(client);
         }
     }
-    
+
     public List<String> hmget(String key, String... fields) {
         Jedis client = jedisPool.getResource();
         try {
@@ -506,56 +498,54 @@ public class RedisClient {
             jedisPool.returnResourceObject(client);
         }
     }
-    
-    /**
-	 * 从redis里面得到以 某字符串开头的所有key
-	 * 
-	 * @param str
-	 * */
-	public Set<String> getKeyByStr(String str) {
-		Jedis client = jedisPool.getResource();
 
-		Set<String> keys = null;
-		try {
-			keys = client.keys(str);
-		} finally {
-			jedisPool.returnResourceObject(client);
-		}
-		return keys;
-	}
-	
-	public void ltrim(String key, int start, int stop){
-		Jedis client = jedisPool.getResource();
+    /**
+     * 从redis里面得到以 某字符串开头的所有key
+     *
+     * @param str
+     */
+    public Set<String> getKeyByStr(String str) {
+        Jedis client = jedisPool.getResource();
+
+        Set<String> keys = null;
+        try {
+            keys = client.keys(str);
+        } finally {
+            jedisPool.returnResourceObject(client);
+        }
+        return keys;
+    }
+
+    public void ltrim(String key, int start, int stop) {
+        Jedis client = jedisPool.getResource();
         try {
             client.ltrim(key, start, stop);
-        } finally{
+        } finally {
             jedisPool.returnResourceObject(client);
         }
     }
-	/**
-	 * 
-	 * @param key
-	 * @param seconds
-	 * @return
-	 */
-	public Long expire(String key,Integer seconds){
-		Jedis client = jedisPool.getResource();
-		Long success = 1l;
-		try{
-			success = client.expire(key, seconds);
-		}finally{
-			jedisPool.returnResourceObject(client);;
-		}
-		return success;
-	}
-	
+
+    /**
+     * @param key
+     * @param seconds
+     * @return
+     */
+    public Long expire(String key, Integer seconds) {
+        Jedis client = jedisPool.getResource();
+        Long success = 1L;
+        try {
+            success = client.expire(key, seconds);
+        } finally {
+            jedisPool.returnResourceObject(client);
+        }
+        return success;
+    }
+
     /**
      * 存入的时hash结构的数据,并且去掉value中的引号
      *
-     * @param key
-     * key
-     * @param map
-     * map的key实质为field。
+     * @param key key
+     * @param map map的key实质为field。
      * @return
      */
     public <T, S> boolean hmsetWithoutQuotationMarks(String key, Map<T, S> map) {
@@ -574,7 +564,7 @@ public class RedisClient {
             client.hmset(key, stringMap);
             return true;
         } finally {
-            jedisPool.returnResourceObject(client);// 向连接池“归还”资源
+            jedisPool.returnResourceObject(client);
         }
     }
 
