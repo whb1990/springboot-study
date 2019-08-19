@@ -46,7 +46,7 @@ public class DefaultMessageProtocol implements MessageProtocol {
         try {
             // 2、bytes -> request 反序列化
             byte[] bytes = readBytes(inputStream);
-            System.out.println("[2]服务端反序列化出obj:[" + new String(bytes) + "], length:" + bytes.length);
+            System.out.println("[2]服务端反序列化出obj:[" + new String(bytes, "utf-8") + "], length:" + bytes.length);
             //System.out.println("[2]服务端反序列化出obj length:" + bytes.length);
             RpcRequest request = serializeProtocol.deserialize(RpcRequest.class, bytes);
             return request;
@@ -68,7 +68,7 @@ public class DefaultMessageProtocol implements MessageProtocol {
         try {
             // 3、把response 序列化成bytes 传给客户端
             byte[] bytes = serializeProtocol.serialize(RpcResponse.class, response);
-            System.out.println("[3]服务端序列化出bytes:[" + new String(bytes) + "], length:" + bytes.length);
+            System.out.println("[3]服务端序列化出bytes:[" + new String(bytes, "utf-8") + "], length:" + bytes.length);
             //System.out.println("[3]服务端序列化出bytes length:" + bytes.length);
             outputStream.write(bytes);
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class DefaultMessageProtocol implements MessageProtocol {
         try {
             // 1、先把这个request -> bytes 序列化掉
             byte[] bytes = serializeProtocol.serialize(RpcRequest.class, request);
-            System.out.println("[1]客户端序列化出bytes:[" + new String(bytes) + "], length:" + bytes.length);
+            System.out.println("[1]客户端序列化出bytes:[" + new String(bytes, "utf-8") + "], length:" + bytes.length);
             //System.out.println("[1]客户端序列化出bytes length:" + bytes.length);
             outputStream.write(bytes);
         } catch (IOException e) {
@@ -105,7 +105,7 @@ public class DefaultMessageProtocol implements MessageProtocol {
         try {
             // 4、bytes 反序列化成response
             byte[] bytes = readBytes(inputStream);
-            System.out.println("[4]客户端反序列化出bytes:[" + new String(bytes) + "], length:" + bytes.length);
+            System.out.println("[4]客户端反序列化出bytes:[" + new String(bytes, "utf-8") + "], length:" + bytes.length);
             //System.out.println("[4]客户端反序列化出bytes length:" + bytes.length);
             RpcResponse response = serializeProtocol.deserialize(RpcResponse.class, bytes);
 
