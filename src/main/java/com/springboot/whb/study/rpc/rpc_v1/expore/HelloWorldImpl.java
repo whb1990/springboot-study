@@ -1,4 +1,4 @@
-package com.springboot.whb.study.rpc.expore;
+package com.springboot.whb.study.rpc.rpc_v1.expore;
 
 import java.util.Random;
 
@@ -8,11 +8,6 @@ import java.util.Random;
  * @description: 接口实现类
  */
 public class HelloWorldImpl implements HelloWorld {
-
-    @Override
-    public String hi() {
-        return "ok";
-    }
 
     @Override
     public int add(int a, int b) {

@@ -1,4 +1,4 @@
-package com.springboot.whb.study.rpc;
+package com.springboot.whb.study.rpc.rpc_v1;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -57,7 +57,6 @@ public class RpcUsedService {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            //实际上proxy没啥用处，不需要真正的反射
             MethodParameter methodParameter = new MethodParameter();
             methodParameter.setClassName(clazz.getName());
             methodParameter.setMethodName(method.getName());

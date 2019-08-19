@@ -1,4 +1,4 @@
-package com.springboot.whb.study.rpc.expore;
+package com.springboot.whb.study.rpc.rpc_v1.expore;
 
 /**
  * @author: whb
@@ -6,8 +6,6 @@ package com.springboot.whb.study.rpc.expore;
  * @description: 接口定义
  */
 public interface HelloWorld {
-
-    String hi();
 
     int add(int a, int b);
 }

@@ -1,4 +1,4 @@
-package com.springboot.whb.study.rpc;
+package com.springboot.whb.study.rpc.rpc_v1;
 
 import java.io.*;
 import java.net.Socket;
@@ -39,7 +39,7 @@ public class IOClient {
                 try {
                     socket.close();
                 } catch (IOException e) {
-
+                    throw new RuntimeException("socket关闭失败");
                 }
             }
         }

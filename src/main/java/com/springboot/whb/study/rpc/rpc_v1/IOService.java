@@ -1,4 +1,4 @@
-package com.springboot.whb.study.rpc;
+package com.springboot.whb.study.rpc.rpc_v1;
 
 import com.google.common.base.Joiner;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;

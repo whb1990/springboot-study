@@ -1,4 +1,6 @@
-package com.springboot.whb.study.rpc;
+package com.springboot.whb.study.rpc.rpc_v1;
+
+import com.springboot.whb.study.rpc.rpc_v1.MethodParameter;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

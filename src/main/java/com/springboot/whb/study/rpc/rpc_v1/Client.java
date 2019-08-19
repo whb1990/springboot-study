@@ -1,10 +1,9 @@
-package com.springboot.whb.study.rpc;
+package com.springboot.whb.study.rpc.rpc_v1;
 
 import com.google.common.base.Joiner;
-import com.springboot.whb.study.rpc.expore.HelloWorld;
+import com.springboot.whb.study.rpc.rpc_v1.expore.HelloWorld;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
-import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -23,7 +22,7 @@ public class Client {
         RpcUsedService rpcUsedService = new RpcUsedService();
         rpcUsedService.register(HelloWorld.class);
         try {
-            IOClient ioClient = new IOClient("127.0.0.1", 10001);
+            IOClient ioClient = new IOClient("127.0.0.1", 11111);
             //网络套接字连接  同上是10001端口
             rpcUsedService.setIoClient(ioClient);
             HelloWorld helloWorld = rpcUsedService.get(HelloWorld.class);
@@ -39,7 +38,7 @@ public class Client {
                 });
             }
         } catch (Exception e) {
-
+            throw new RuntimeException("客户端执行出错:{}", e);
         } finally {
             threadPoolExecutor.shutdown();
         }

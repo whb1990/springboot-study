@@ -1,6 +1,6 @@
-package com.springboot.whb.study.rpc;
+package com.springboot.whb.study.rpc.rpc_v1;
 
-import com.springboot.whb.study.rpc.expore.HelloWorldImpl;
+import com.springboot.whb.study.rpc.rpc_v1.expore.HelloWorldImpl;
 
 /**
  * @author: whb
@@ -12,10 +12,10 @@ public class Service {
     public static void main(String[] args) {
         RpcExploreService rpcExploreService = new RpcExploreService();
         //传入的字符串是接口的全名称
-        rpcExploreService.explore("com.springboot.whb.study.rpc.expore.HelloWorld", new HelloWorldImpl());
+        rpcExploreService.explore("com.springboot.whb.study.rpc.rpc_v1.expore.HelloWorld", new HelloWorldImpl());
         try {
-            //开启10001端口监听服务
-            Runnable ioService = new IOService(rpcExploreService, 10001);
+            //开启11111端口监听服务
+            Runnable ioService = new IOService(rpcExploreService, 11111);
             new Thread(ioService).start();
         } catch (Exception e) {
 
